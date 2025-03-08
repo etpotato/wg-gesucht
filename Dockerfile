@@ -6,12 +6,10 @@ COPY . /app
 WORKDIR /app
 
 FROM base AS prod-deps
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
+RUN pnpm install --prod --frozen-lockfile
 
-FROM node:20.12.2-alpine
+FROM base
 RUN corepack enable
 WORKDIR /app
-COPY --from=base /app/.env /app
-COPY --from=base /app/package.json /app
 COPY --from=prod-deps /app/node_modules /app/node_modules
 CMD [ "pnpm", "start" ]

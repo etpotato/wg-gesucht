@@ -1,7 +1,7 @@
 require('dotenv').config();
-const puppeteer = require('puppeteer');
 const TelegramBot = require('node-telegram-bot-api');
 const { getState, setState, getAds, setAds } = require('./s3');
+const { fetchNewAds } = require('./html-parser');
 
 const TIMEOUT = 1000 * 60 * Number(process.env.TIMEOUT_MINUTES);
 const HOSTNAME = 'www.wg-gesucht.de';
@@ -40,22 +40,6 @@ async function main() {
     setTimeout(main, TIMEOUT);
   }
 }
-
-async function fetchNewAds(filterUrl) {
-  const browser = await puppeteer.launch();
-  const page = await browser.newPage();
-
-  page.setDefaultNavigationTimeout(0);
-
-  await page.goto(filterUrl);
-
-  const urls = await page.$$eval('.detailansicht:not(.partners)', (nodes) => nodes.map((n) => n.href));
-  const uniqueUrls = [...new Set(urls)];
-
-  await browser.close();
-
-  return uniqueUrls;
-};
 
 function calculateNewAds(oldAds, ads) {
   const newAds = [];
