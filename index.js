@@ -73,7 +73,7 @@ function initBot() {
       console.log(`${new Date().toISOString()}:`, `updated filter: ${proposedUrl}`);
     } catch (error) {
       await bot.sendMessage(process.env.TG_CHAT_ID, 'Not a valid wg-gesucht url');
-      console.log(`${new Date().toISOString()}:`, `invalid filter provided: ${proposedUrl}`);
+      console.log(`${new Date().toISOString()}:`, `invalid filter provided: ${msg.text}`);
     }
   });
 
