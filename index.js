@@ -1,6 +1,6 @@
 require('dotenv').config();
 const TelegramBot = require('node-telegram-bot-api');
-const { getState, setState, getAds, setAds } = require('./s3');
+const { getState, setState, getAds, saveNewAds } = require('./supabase');
 const { fetchNewAds } = require('./html-parser');
 
 const TIMEOUT = 1000 * 60 * Number(process.env.TIMEOUT_MINUTES);
@@ -23,7 +23,7 @@ async function main() {
       return;
     }
 
-    await setAds([...oldAds, ...newAds]);
+    await saveNewAds(newAds);
 
     // notify if new items are found
     for (const newAd of newAds) {
