@@ -1,6 +1,5 @@
 require('dotenv').config();
 const { S3Client, GetObjectCommand, PutObjectCommand } = require('@aws-sdk/client-s3');
-const fs = require('fs/promises');
 
 const AwsFileNames = {
   State: 'state.json',
